@@ -19,12 +19,12 @@
 
         <main>
             <div class="row">
-                <label for="username">username</label>
+                <label for="username">Username:</label>
                 <input type="text" name="username" id="username">
             </div>
 
             <div class="row">
-                <label for="password">password</label>
+                <label for="password">Password:</label>
                 <input type="password" name="password" id="password">
             </div>
 
@@ -44,7 +44,6 @@
                 username: document.getElementById('username').value,
                 password: document.getElementById('password').value,
             };
-
             axios.post('/api/login', data)
                 .then(res => {
                     console.log(res);
@@ -52,10 +51,14 @@
                     document.getElementById('password').value = '';
                     if (res && res.data && res.data.success) {
                         const token = res.data.token;
+                        history.pushState(null, null, "/login")
                         localStorage.setItem('jwt', token);
                         //If the response is a success then clears password
                         getDashboard();
                     }
+                })
+                .catch((error)=>{
+                    console.log(error)
                 });
         }
 
@@ -69,11 +72,12 @@
                 if (res && res.data && res.data.success) {
                     document.querySelector('h1.row').innerHTML = 'Dashboard';
                     document.querySelector('main').innerHTML = res.data.myContent;
+                    history.pushState(null, null, "/dashboard")
                 }
             });
         }
 
-        function getRoute() {
+        function getSettings() {
             const token = localStorage.getItem('token');
             axios.get('/api/settings', {
                 headers: {
@@ -83,6 +87,7 @@
                 if (res && res.data && res.data.success) {
                     document.querySelector('h1.row').innerHTML = 'Settings Page';
                     document.querySelector('main').innerHTML = res.data.myInfo;
+                    history.pushState(null, null, "/settings")
                 }
             });
         }

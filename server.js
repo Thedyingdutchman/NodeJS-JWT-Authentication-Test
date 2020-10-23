@@ -29,13 +29,13 @@ const jwtMW = exjwt({
 let users = [
     {
         id: 1,
-        username: 'student1',
-        password: '123',
+        username: 'sam',
+        password: '123'
     },
     {
         id: 2,
-        username: 'student2',
-        password: '456',
+        username: 'james',
+        password: '456'
     }
 ];
 
@@ -86,7 +86,7 @@ app.get('/', (req, res) => {
 app.get('/api/settings', jwtMW, (req, res) => {
     res.json({
         success: true,
-        myInfo: 'This is the solutions page'
+        myInfo: 'This is the settings page'
     });
 });
 
@@ -104,16 +104,18 @@ app.use(function (err, req, res, next) {
 });
 
 //Where I keep my time for the Secrect Key
-/*app.use(secretKey, res) => {
+app.use(secretKey, (res) => {
     if (secretKey >= '3m') {
         return false;
     };
-}); */
+}); 
 
+// Where I update the URL when you change routes
+/*
 var data = e.target.getAttribute('data-name'),
 url = data + "/";
 history.pushState(null, null, '/api/dashboard');
-
+*/
 
 
 app.listen(PORT, () => {
