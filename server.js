@@ -41,11 +41,12 @@ let users = [
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
+    console.log(req.body);
     console.log('This is the username:', username, 'This is the password:', password);
     
     for (let user of users) {
         if (username == user.username && password == user.password) {
-            let token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '3m' });
+            let token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: 180 });
             res.json({
                 success: true,
                 err: null,
@@ -53,13 +54,13 @@ app.post('/api/login', (req, res) => {
             });
             break;
         }
-        else {
+       /* else {
             res.status(401).json({
                 success: false,
                 token: null,
                 err: 'Username or password is incorrect'
             });
-        }
+        }*/
     }
 });
 
@@ -110,14 +111,6 @@ app.use(secretKey, (res) => {
     };
 }); 
 
-// Where I update the URL when you change routes
-/*
-var data = e.target.getAttribute('data-name'),
-url = data + "/";
-history.pushState(null, null, '/api/dashboard');
-*/
-
-
 app.listen(PORT, () => {
-    console.log('Serving on port ${PORT}');
+    console.log(`Serving on port ${PORT}`);
 });

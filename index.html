@@ -31,7 +31,7 @@
             <div>
                 <button onclick="login()">Login</button>
                 <button onclick="getDashboard()">Get Dashboard</button>
-                <button onclick="getRoute()">Settings</button>
+                <button onclick="getSettings()">Settings</button>
             </div>
         </main>
 
@@ -51,6 +51,7 @@
                     document.getElementById('password').value = '';
                     if (res && res.data && res.data.success) {
                         const token = res.data.token;
+                        console.log(token);
                         history.pushState(null, null, "/login")
                         localStorage.setItem('jwt', token);
                         //If the response is a success then clears password
@@ -66,7 +67,7 @@
             const token = localStorage.getItem('jwt');
             axios.get('/api/dashboard', {
                 headers: {
-                    'Authorization': 'Bearer ${token}'
+                    'Authorization': `Bearer ${token}`
                 }
             }).then(res => {
                 if (res && res.data && res.data.success) {
@@ -78,10 +79,10 @@
         }
 
         function getSettings() {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('jwt');
             axios.get('/api/settings', {
                 headers: {
-                    'Authorization': 'Bearer ${token}'
+                    'Authorization': `Bearer ${token}`
                 }
             }).then(res => {
                 if (res && res.data && res.data.success) {
@@ -92,17 +93,6 @@
             });
         }
 
-        //This will save the token when you successfully sign-in
-        /* function getDashboard() {
-            const token = localStorage.getItem('jwt');
-            if (token) {
-                getDashboard();
-            }
-        }
-        onload();
-        */
-
-
         //Where I would refresh the page is the time has expired
         function expiration() {
             const expiration = localStorage.getItem('secretKey');
@@ -110,7 +100,6 @@
                 getDashboard();
             };
         }
-        
 
     </script>
 
